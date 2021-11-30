@@ -1,0 +1,48 @@
+#importing libraries and saving spark context to sc variable
+
+from pyspark import SparkContext
+from pyspark.sql import SQLContext
+import pandas
+from pyspark.sql.functions import year,month
+
+sc = SparkContext.getOrCreate()
+sqlContext = SQLContext(sc)
+
+#Showing the type of sc variable
+type(sc)
+
+# method of creating RDD and reading csv file.
+tesla_file = 'TSLA.csv'
+tesla_rdd = sc.textFile(tesla_file)
+tesla_rdd.take(5) #take = action operator
+
+#Transformation to RDD 
+csv_rdd = tesla_rdd.map(lambda row:row.split(","))
+csv_rdd.collect()
+
+google_file = 'GOOG.csv'
+google_rdd = sc.textFile (google_file)
+csv_rdd = google_rdd.map(lambda row:row.split(","))
+csv_rdd.collect()
+
+amazon_file = 'AMZN.csv'
+amazon_rdd = sc.textFile (amazon_file)
+csv_rdd = amazon_rdd.map(lambda row:row.split(","))
+sv_rdd.collect()
+
+#RDD to Dataframe with toDF
+tesla_df = csv_rdd.toDF(['date', 'open', 'high', 'low', 'close', 'adjclose', 'volume'])
+tesla_df.take(5)
+
+#Load stock price data from CSV files
+amazon_file = 'AMZN.csv'
+amazon_df = sqlContext.read.load(amazon_file, format='com.databricks.spark.csv', header='true', inferSchema='true')
+
+google_file = 'GOOG.csv'
+google_df = sqlContext.read.load(google_file, format='com.databricks.spark.csv', header='true', inferSchema='true')
+
+tesla_file = 'TSLA.csv'
+tesla_df = sqlContext.read.load(tesla_file, format='com.databricks.spark.csv', header='true', inferSchema='true')
+
+#use pandas to print the results in a nicer way
+amazon_df.toPandas().head(5)
