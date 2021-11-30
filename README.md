@@ -14,3 +14,5 @@ Steps of this project and the study scope:
 - Perform statistical analysis on our data using Spark SQL 
 
 - Save and retrieve data in parquet 
+
+Course followed: https://www.coursera.org/projects/data-exploration-spark-sql
