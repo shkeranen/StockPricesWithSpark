@@ -1,0 +1,14 @@
+#Explore the dataset - average closing price for google by year
+google_df.select(year("Date").alias ("yr"), "Close").groupby("yr").avg("Close").sort("yr").show()
+
+#Average lowest price for Amazon per month.
+amazon_df.select(year("Date").alias("year"),
+                month("Date").alias("month"),
+                "Low") \
+         .groupby("year", "month") \
+         .avg("Low") \
+         .sort("year", "month") \
+         .show()
+         
+
+
