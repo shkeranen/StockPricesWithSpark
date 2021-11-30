@@ -1,0 +1,18 @@
+#Register dataframes as temptables
+
+amazon_df.registerTempTable("amazon_stocks")
+google_df.registerTempTable("google_stocks")
+tesla_df.registerTempTable("tesla_stocks")
+
+#SQL-queries using sqlContext
+sqlContext.sql("SELECT * FROM amazon_stocks").show(5)
+
+#Average closing price for amazon ordered by year and month with SQL
+sqlContext.sql("SELECT year(Date) as year, month(Date) as month, avg(Close) from amazon_stocks group by year, month").show()
+
+#Find out when Google's closing price went either up or down more than 2 dollars in a same day
+sqlContext.sql("SELECT Date, Open, Close, abs(Close - Open) as dif FROM google_stocks WHERE abs(Close - Open) > 4").show()
+
+#Dataframe with join for all three companies closing prices
+joinclose_df = sqlContext.sql("SELECT tesla_stocks.Date, tesla_stocks.Close as teslaClose, amazon_stocks.Close as amazonClose, google_stocks.Close as googleClose FROM tesla_stocks JOIN google_stocks ON tesla_stocks.Date = google_stocks.Date JOIN amazon_stocks ON amazon_stocks.Date = tesla_stocks.Date")
+joinclose_df.show()
