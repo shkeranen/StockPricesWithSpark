@@ -1,0 +1,5 @@
+#Save join close dataframe to parquet file
+joinclose_df.write.format("parquet").save("joinStock.parquet")
+
+final_df = sqlContext.read.parquet("joinStock.parquet")
+final_df.show()
